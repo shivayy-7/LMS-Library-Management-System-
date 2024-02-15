@@ -1,0 +1,16 @@
+package com.aashdit.lms.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.aashdit.lms.model.LibraryCard;
+
+@Repository
+public interface LibraryCardRepository extends JpaRepository<LibraryCard, Long> {
+
+	@Query(value="select * from t_lms_library_card ds where ds.library_card_id=:libcardId ",nativeQuery = true)
+	LibraryCard findByLib_cardId(@Param("libcardId") Long lib_cardId);
+
+}

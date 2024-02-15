@@ -1,0 +1,44 @@
+package com.aashdit.lms.VO;
+
+import lombok.Data;
+
+@Data
+public class BookCatalogDTO {
+	    private String bookType;
+	    private long bookCatalogId;
+	    private String bookTitles;
+	    private String bookSubject;
+	    private String bookCatalogCode;
+	    private long subCategoryId;
+	    private String description;
+	    private String language;
+	    private String numberOfPages;
+	    private String imagePath;
+	    private String bookPrice;
+	    private String purchaseDate;
+	    private String publishDate;
+	    private long libraryId;
+	    private String publisherId;
+	    private String isbn;
+
+	   
+
+	    public BookCatalogDTO(Object[] row) {
+	    	this.bookType= String.valueOf(row[1]);
+	        this.bookCatalogId = Long.parseLong(String.valueOf(row[2]));
+	        this.bookTitles = String.valueOf(row[3]);
+	        this.bookSubject = String.valueOf(row[10]);
+	        this.bookCatalogCode = String.valueOf(row[11]);
+	        this.subCategoryId = Long.parseLong(String.valueOf(row[13]));
+	        this.description = String.valueOf(row[14]);
+	        this.language = String.valueOf(row[15]);
+	        this.numberOfPages = String.valueOf(row[16]);
+	        this.imagePath = String.valueOf(row[17]);
+	        this.bookPrice = String.valueOf(row[18]);
+	        this.purchaseDate = String.valueOf(row[19]);
+	        this.publishDate = String.valueOf(row[20]);
+	        this.libraryId = Long.parseLong(String.valueOf(row[21]));
+	        this.publisherId = String.valueOf(row[21]);
+	        this.isbn = String.valueOf(row[22]);
+	    }
+}

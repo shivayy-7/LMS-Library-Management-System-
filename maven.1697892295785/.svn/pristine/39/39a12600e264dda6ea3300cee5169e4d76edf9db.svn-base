@@ -1,0 +1,101 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
+<div class="container-fluid" style="margin-top: -100px; position: relative; z-index:99">
+<%@ include file="/WEB-INF/views/message.jsp"%>
+                <div class="row inner-cardbox">
+                    <h6>Create User</h6>
+                    <hr>
+            <form class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>Registration ID</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Name</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Department</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>Email</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Phone</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>City</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>State</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Country</label>
+                            <select class="form-select"
+                                aria-label="Default select example">
+                                <option selected>Select Country</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Address Information</label>
+                            <textarea class="form-control"
+                                style="    height: 70px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button type="button"
+                            class="btn btn-primary"
+                            style="position: relative; top:-25px">Submit</button>
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+                    <h6 class="mb-2">Upload Image</h6>
+                    <div class="circle upload-button">
+                        <!-- User Profile Image -->
+                        <img class="profile-pic"
+                            src="../assets/image/user.png">
+
+                        <!-- Default Image -->
+                        <!-- <i class="fa fa-user fa-5x"></i> -->
+                    </div>
+
+                    <input class="file-upload" type="file" accept="image/*" />
+
+                </div>
+            </form>
+        </div>
+    </div>
+     
+      
+
+
+<form action = "${contextPath}/staffManagement/viewDocuments" method="post" id="staffDocView" enctype="multipart/form-data" target="_blank">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="moduleName" id="moduleName"/>
+	<input type="hidden" name="filePath" id="filePath"/>
+</form> 

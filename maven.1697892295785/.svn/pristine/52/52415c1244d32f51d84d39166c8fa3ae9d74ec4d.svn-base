@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<configuration>
+
+	<!-- <property name="LOG_HOME" value="/opt/tomcat/logs" /> --> <!-- For Linux Environment -->
+	<property name="LOG_HOME" value="C:\\logs\\" />
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %M %L : %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE-AUDIT"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/bemc.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %M %L : %msg%n</Pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/archived/bemc.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>2MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		
+	</appender>
+
+
+	<logger name="com.aashdit">
+		<level value="debug" />
+	</logger>
+
+	<logger name="org.springframework">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.hibernate">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.apache">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.eclipse">
+		<level value="error" />
+	</logger>
+
+	<logger name="com.zaxxer.hikari">
+		<level value="error" />
+	</logger>
+
+	<root>
+		<level value="debug" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE-AUDIT" />
+	</root>
+
+</configuration>

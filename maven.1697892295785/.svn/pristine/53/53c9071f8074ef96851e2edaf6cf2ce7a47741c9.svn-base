@@ -1,0 +1,96 @@
+package com.aashdit.lms.model;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.aashdit.framework.core.model.Auditable;
+import com.aashdit.umt.model.User;
+
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name="t_lms_mst_book_catalog")
+public class BookCatalog extends Auditable<User> implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4011475586078147769L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="book_catalog_id")
+	private Long bookCatalogId;
+	
+	@Column(name="book_catalog_code")
+	private String bookCatalogCode;
+	
+	@Column(name="isbn")
+	private String isbnNo;
+	
+	@Column(name="book_titles")
+	private String bookTitles;
+	
+//	@ManyToOne
+//	@JoinColumn(name="author_id")
+//	private Author authorId;
+	@Column(name="author_id")
+	private String authorId;
+	
+	@Column(name="total_book")
+	private Long totalBook;
+	
+	@Column(name="book_subject")
+	private String bookSubject;
+	
+	@ManyToOne
+	@JoinColumn(name="sub_category_id")
+	private SubCategory subCategoryId;
+	
+	@Column(name="description")
+	private String description;
+	
+	@Column(name="language")
+	private String language;
+	
+	@Column(name="no_of_page")
+	private Long noOfPage;
+	
+	@Column(name="img_path")
+	private String imgPath;
+	
+	@Column(name="book_price")
+	private String bookPrice;
+	
+	@Column(name="purchase_date")
+	private Date purchaseDate;
+	
+//	@Column(name="publish_date")
+//	private Date publishDate;
+	
+	@Column(name="publish_date")
+	private String publishDate;
+	
+	@ManyToOne
+	@JoinColumn(name="lib_id")
+	private Library libId;
+	
+//	@ManyToOne
+//	@JoinColumn(name="publisher_id")
+//	private Publisher publisherId;
+	
+	@Column(name="publisher_id")
+	private String publisherId;
+
+	@Column(name="is_active")
+	private Boolean isActive;
+}

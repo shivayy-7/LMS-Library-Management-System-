@@ -1,0 +1,431 @@
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="userDetails" value="${serviceOutcome.data}" />
+<script type="text/javascript"
+	src="${contextPath}/assets/appJs/validation/common-utils.js"></script>
+	<script type="text/javascript"
+	src="${contextPath}/assets/appJs/validation/AadharVaidator.js"></script>
+	
+	
+	<div class="container-fluid">
+	<%@ include file="/WEB-INF/views/message.jsp"%>
+                <div class="row inner-cardbox">
+                    <h6>Add Member</h6>
+                    <hr>
+                   <form action="${contextPath}/mst/save-member" class="row" id="submitForm" method="POST" enctype="multipart/form-data">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						  <input type="hidden" name="memberId" value="${mamberData.memberId}" />
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" id="memberName" name="memberName" value="${mamberData.memberName}">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Contact Number</label>
+                                    <input type="tel" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+											maxlength="10" onchange="is_mobile_valid(this.value);"
+											id="phoneNo" name="phoneNo" value="${mamberData.phoneNo}">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Email</label>
+                                    <input type="text" class="form-control" 
+											onchange="mailVal(this.value)" id="emailId" name="emailId"
+											value="${mamberData.emailId}">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Gender</label>
+                                    <select
+									class="form-control" id="gender"
+									name="gender.genderId">
+									<option value="0">--Select--</option>
+									<c:forEach items="${genderList}" var="gl">
+										<option value="${gl.genderId}"
+											${mamberData.gender.genderId eq gl.genderId ? 'selected' : '' }>${gl.genderNameEN}</option>
+									</c:forEach>
+								</select>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Type</label>
+                                   <select class="form-control"
+											id="memberTypeId" name="memberTypeId">
+											<option value="">--Select--</option>
+											<c:forEach items="${typeListData}" var="types">
+												<option value="${types.valueId}"
+													${types.valueId eq mamberData.memberTypeId ? 'selected':''}>${types.valueCode}</option>
+											</c:forEach>
+										</select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Date of Birth</label>
+                                    <div class="datepicker_con_add">
+                                    <input type="text" class="form-control"
+											id="dob" name="dob" style="pointer-events: none;"
+											value="<fmt:formatDate pattern="dd/MM/yyyy" value="${mamberData.dob}" />">
+											</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                            
+                            <div class="form-group col-md-4">
+                                    <label>Aadhar Number</label>
+                                <input type="text" class="form-control form-control-sm NumbersOnly" onchange="aadharDupliCate(this); ValidAadhaarNoCheck(this);"  id="aadharNo"  maxlength="12" name="aadharNo" 
+                                value="${mamberData.aadharNo}" >
+                                </div>
+                            
+                                <div class="col-md-6">
+                                    <label>Address Information</label>
+                                    <textarea class="form-control" style="height: 70px;"
+											oninput="this.value = this.value.replace(/[^A-Za-z0-9\-_!@#$%^&*()]/g, '');"
+											maxlength="10" id="address"
+											name="address">${mamberData.address}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                             
+                                <button type="button" class="btn btn-primary" onclick="submitButton();" value="Submit">Submit</button>
+                             	<c:if test="${mamberData.status eq 'PENDING'}">
+									<c:if test="${roleCode eq 'ROLE_LA'}">
+									 <a class="btn btn-xs int-btn btn-success" title="Approve" data-bs-toggle="modal" data-bs-target="#approveModal" onclick="updateIntrest('${mamberData.memberCode}');" >APPROVE</a>
+									</c:if>
+								</c:if>
+								
+								<c:if test="${not empty cardData }">
+									<c:if test="${roleCode eq 'ROLE_LA'}">
+									 <a class="btn btn-xs int-btn btn-success" title="Re-Valid" data-bs-toggle="modal" data-bs-target="#Re-approveModal" onclick="updateReapproval('${mamberData.memberCode}');" >Re-Valid</a>
+									</c:if>
+								</c:if>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <h6 class="mb-2">Upload Image</h6>
+                            <div class="circle upload-button">
+                           <c:if test="${empty mamberData}">
+                                <img class="profile-pic" src="../assets/image/user.png">
+                               </c:if>
+                               
+                                 <c:if test="${not empty mamberData}">
+                                <img class="profile-pic" src="${contextPath}/image/viewimage?filePath=${mamberData.imagePath}">
+                               </c:if>
+                               
+                            </div>
+
+                            <input class="file-upload" type="file" accept="image/*" name="addAttachment" id="addAttachment"
+												onchange="checkFileTypeExtAndSize(this,'2');" value="${mamberData.imagePath}">
+                            
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+ 
+<form action = "${contextPath}/image/viewDocuments" method="get" id="viewmamberDoc" enctype="multipart/form-data" target="_blank">
+	<input type="hidden" name="moduleName" id="moduleName"/>
+	<input type="hidden" name="filePath" id="filePath"/>
+</form> 
+<script>
+function submitButton(){
+	 if($("#memberName").val() == ""){
+		  bootbox.alert("Please Provide  Name");
+		  return false;
+	  }
+	  if($("#emailId").val() == ""){
+		  bootbox.alert("Please Provide  E-mail");
+		  return false;
+	  }
+	  if($("#phoneNo").val() == ""){
+		  bootbox.alert("Please Provide  Contact Number");
+		  return false;
+	  }
+	  if($("#gender").val() == ""){
+		  bootbox.alert("Please Provide  Gender");
+		  return false;
+	  }
+	  if($("#address").val() == ""){
+		  bootbox.alert("Please Provide  Address Number");
+		  return false;
+	  }
+	  if($("#memberTypeId").val() == ""){
+		  bootbox.alert("Please Provide  Type ");
+		  return false;
+	  }
+	  var imagepath = '${mamberData.imagePath}';
+	  if(imagepath ==null){
+		  if($("#addAttachment").val() == ""){
+			  bootbox.alert("Please Upload  Image");
+			  return false;
+		  } 
+	  }
+	  
+	  if($("#dob").val() == ""){
+		  bootbox.alert("Please Provide Dob");
+		  return false;
+	  }
+	
+	$("#submitForm").submit();
+}
+
+
+function viewDocument(path){
+	$("#filePath").val(path);
+	var modulname = '${mambermodule}';
+	$("#moduleName").val(modulname);
+	$("#viewmamberDoc").submit();
+}
+
+function checkFileTypeExtAndSize(that ,ftype) {
+	  var fileInput = $("#"+ that.id)[0];
+	  var file = fileInput.files[0];
+	  if (file) {
+	            // Check file size (in bytes)
+	             var maxSize =  1024 * 1024;
+	            if (file.size > maxSize) {
+	            bootbox.alert("File size exceeds 1Mb limit..");
+	            $("#"+that.id).val('');
+	return false;
+	            }
+	        }
+	// Get the file upload control file extension
+	var extn = $('#' + that.id).val().split('.').pop().toLowerCase();
+	if (extn != '') {
+	//debugger;       
+	   // Create array with the files extensions to upload
+	   var fileListToUpload; 
+	   if (parseInt(ftype) == 1){
+	       fileListToUpload = new Array('pdf', 'gif', 'jpg', 'jpeg', 'png');
+	   }
+	   else if (parseInt(ftype) == 2){
+	       fileListToUpload = new Array('png', 'jpg', 'jpeg');
+	   }
+	   else{
+	       fileListToUpload = new Array('pdf');
+	   }
+	   //Check the file extension is in the array.              
+	   var isValidFile = $.inArray(extn, fileListToUpload);        
+	   // isValidFile gets the value -1 if the file extension is not in the list. 
+	   if (isValidFile == -1) {        
+	       if (parseInt(ftype) == 1){
+	          bootbox.alert("Please select a valid file of type pdf, gif, jpg, jpeg, png.");
+	       }
+	       else if (parseInt(ftype) == 2){
+	          bootbox.alert("Please select a valid file of type png, jpg or jpeg.");
+	       }
+	       else{
+	          bootbox.alert("Please select a valid pdf file only.");
+	       }
+	       $('#' + that.id).replaceWith($('#' + that.id).val('').clone(true));
+	   }
+	}
+	else {
+	   return true;
+	}
+	}
+	
+$(function() {
+    $('.datepicker_con1 > input').datepick({
+        onShow: $.datepick.monthOnly,
+        dateFormat: 'dd/mm/yyyy',
+        showOnFocus: true,
+        yearRange: (new Date().getFullYear() - 23) + ':' + new Date().getFullYear(),
+        showTrigger: '<button type="button" class="trigger">' +
+            '<i class="fa fa-calendar"></i></button>',
+         minDate: 0,
+        onSelect: function(d) {
+        }
+    });
+});
+
+
+
+function updateIntrest(mebercode){
+	$("#mamberCode").val(mebercode);
+}
+
+
+function updateReapproval(mebercode){
+	$("#hdnmamberCode").val(mebercode);
+}
+
+function sendapprove(){
+	
+	if($("#valiDate").val() == ""){
+		  bootbox.alert("Please Select  Valid Date Of Member");
+		  return false;
+	  }
+	$("#memberForm").submit();	
+}
+
+function sendreapprove(){
+	
+	if($("#revaliDate").val() == ""){
+		  bootbox.alert("Please Select  Valid Date Of Member");
+		  return false;
+	  }
+	$("#rememberForm").submit();	
+}
+
+
+
+function mailVal(){
+	debugger;
+	var email = $("#emailId").val();
+	var pattern =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	if(!pattern.test(email)){
+	bootbox.alert("Not valid email address");
+	$("#emailId").val('');
+	return false;
+	}
+	}
+	
+function is_mobile_valid(mobNum){
+	  //  var filter = /^\d*(?:\.\d{1,2})?$/;
+	    var filter = /^[6789][0-9]{9}$/;
+	      if (filter.test(mobNum)) {
+	        if(mobNum.length==10){
+	         } else {
+	        bootbox.alert('Please enter 10 digit mobile number');
+	            return false;
+	          }
+	        }
+	        else {
+	        bootbox.alert('Not a valid mobile number');
+	          $("#phoneNo").val("");
+	          return false;
+	       }
+	}
+	
+
+function aadharDupliCate(that){
+	var aadharNO = $('#' + that.id).val();
+	$.ajax({
+		type : "GET",
+		url : "${contextPath}/mst/duplicate_aadhar_check",
+		data : {
+			"aadharNO" : aadharNO,
+		}, 
+		success : function(response) {
+			var val = JSON.parse(response); 
+			if (val.isDuplicate == true) {
+				if(aadharNO == val.aadharno){
+				bootbox.alert("Duplicate Aadhar Number entered.");
+				  $("#"+that.id).val(''); 
+				}
+			} 
+		}, 
+		error : function(error) {
+			bootbox.alert('Something went wrong');
+		}
+	});
+}
+
+function ValidAadhaarNoCheck(that){
+	var valueNm = $('#' + that.id).val();
+	var filter = /^\d*(?:\.\d{1,2})?$/;
+	  if (filter.test(valueNm)) {
+	    if(valueNm.length==12){
+	     } else {
+	    	 bootbox.alert('Invalid Aadhaar No');
+	   	  $("#"+that.id).val(''); 
+	        return false;
+	      }
+	    }
+	    else {
+	    	bootbox.alert('Invalid Aadhaar No');
+	  	  $("#"+that.id).val(''); 
+	      return false;
+	   }	
+			if (!ValidAadhaarNo(valueNm)) {
+		        bootbox.alert("Invalid Aadhaar No");
+		        $("#"+that.id).val(''); 
+		        return false;
+		    }
+			
+	}
+</script>
+
+  
+  
+  <!-- Modal -->
+<div class="modal fade int-modal" id="approveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="${contextPath}/mst/send-approve-member" id="memberForm" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<input type="hidden" name="mamberCode" id="mamberCode">
+			
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="col-md-12 smallInput required" for="">
+						Valid Date:</label>
+					<div class="col-md-12 datepicker_con1"  style="position:relative;">
+						<input type="text" class="form-control form-control-sm "
+							id="valiDate" name="valiDate" style="pointer-events: none;">
+					</div>
+				</div>
+			</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="sendapprove();">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div class="modal fade int-modal" id="Re-approveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="${contextPath}/mst/send-reapprove-member" id="rememberForm" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<input type="hidden" name="mamberCode" id="hdnmamberCode">
+			
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="col-md-12 smallInput required" for="">
+						Re-Valid Date:</label>
+					<div class="col-md-12 datepicker_con1">
+						<input type="text" class="form-control form-control-sm "
+							id="revaliDate" name="revaliDate" style="pointer-events: none;">
+					</div>
+				</div>
+			</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="sendreapprove();">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+

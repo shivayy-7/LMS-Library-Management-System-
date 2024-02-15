@@ -1,0 +1,233 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<style>
+.but-al{
+margin-top:27px !important;
+}
+#chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.chip {
+    background-color: #007acc;
+    color: white;
+    border: 1px solid #007acc;
+    border-radius: 15px;
+    padding: 2px 4px;
+    margin: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#chip-input {
+    border: none;
+    outline: none;
+}
+</style>
+
+<div class="container-fluid" style="margin-top: -100px; position: relative; z-index:99">
+<%@ include file="/WEB-INF/views/message.jsp"%>
+                <div class="row inner-cardbox">
+                    <h6>${empty subCategoryData.subCategoryId ? 'Add ' : 'Update '} Sub Category</h6>
+                    <hr>
+                    
+            <form action="${contextPath}/mst/save-SubCategory" method="post" id="subCategoryForm" enctype="multipart/form-data">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+            <input type="hidden" name="subCategoryId" value="${subCategoryData.subCategoryId}" />
+                <div class="row">
+                 <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="smallInput required" for=""> Category Name :</label>
+							<select class="form-control form-control-sm" id="categoryName" name="categoryId"   required>
+							<option value="0">Select</option>
+								<c:forEach items="${categoryList}" var="categorylist" >
+									<option value="${categorylist.categoryId}" ${categorylist.categoryId eq subCategoryData.category.categoryId ? 'selected' : '' }>${categorylist.categoryName}</option>
+								</c:forEach>
+							</select>
+		                </div>
+		              </div>
+                      <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="" for="">Sub-Category Name :</label>
+		                 	 <input type="text" class="form-control form-control-sm AlphabetsOnly" id="subCategoryName" value="${subCategoryData.subCategoryName}" name="subCategoryName" maxlength="35">
+		                </div>
+		              </div>
+		              
+		               <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="" for="">Sub-Category Description :</label>
+		                  	<input type="text" class="form-control form-control-sm AlphabetsOnly" id="subCategoryDescription" value="${subCategoryData.subCategoryDescription}" name="subCategoryDescription" maxlength="60">
+		                </div>
+		              </div>
+
+		              
+		                <div class="col-md-3">
+		                <div class="form-group dwnl-btn">
+		                  <label class="smallInput required" for="">Sub-Category Image :</label>
+		                  	<input type="file" class="form-control form-control-sm" id="subCategoryImageId" name="subCategoryImage" value="${subCategoryData.subCategoryImage}">
+		                	<c:if test="${subCategoryData.subCategoryImagePath != null}">
+		                  		<button type="button" title="View Image" onclick = "viewImage()"><i class='fa fa-eye'></i></button>
+		                	</c:if>
+		                </div>
+		              </div> 
+		              
+		              <div class="col-md-6">
+			              <div class="form-group">
+			                  <label class="smallInput required" for="">Sub-Category Image :</label>
+			                 <div id="chips-container" >
+							    <div id="chips-list">
+							    </div>
+							    <input type="text" id="chip-input" placeholder="Add a keyword" onkeyup="if(event.key === 'Enter') addChip()" value="${subCategoryData.keywords}" maxlength="500">
+							    <!-- Hidden input to store the keywords -->
+							    <input type="hidden" id="keywords-input" name="keywords" value="">
+							</div>
+						  </div>
+						</div>
+		              
+		             <div class="col-md-12 mt-3" style="text-align:center;">
+						<button type="button" class="btn btn-success btn-sm" onclick = "saveForm('${empty subCategoryData ? 'SAVE' : 'UPDATE'}')">${empty subCategoryData ? 'Save' : 'Update'}</button>
+						<a href="${contextPath}/mst/add-Category" class="btn btn-danger btn-sm">Cancel</a>
+				  	</div>
+           	</div>
+            </form>
+            </div>
+        </div>	
+
+    
+    
+					<div class="inner-cardbox mt-3">					
+						<h6>Sub Category List</h6>
+						<hr>
+							<table  class="display table exportbtn table-bordered table-hover" >
+								<thead>
+									<tr>
+										<th>Sl no:</th>
+										<th>Sub-Category Name:</th>
+										<th>Code:</th>
+										<th>Descriptions:</th>
+										<th style="width: 165px;">Action:</th> 													
+									</tr>
+								</thead>
+								<tbody>
+							 	   <c:forEach items="${subCategoryList}" var="sublist" varStatus="count"> 
+										<tr>
+											<td>${count.count }</td>
+											<td>${sublist.subCategoryName}</td>
+											<td>${sublist.subCategoryCode}</td>
+											<td>${sublist.subCategoryDescription}</td>
+											<td> 
+												<button type="button" class="btn btn-warning"    onclick = "editSubCategoryForm('${sublist.subCategoryId}')"  title="Edit"><i class='bx bxs-pencil'></i></button>
+			            						<button type="button" class="btn ${sublist.isActive eq false ? 'btn-danger' : 'btn-success'} btn-xs" data-toggle="tooltip" onclick = "actSubCategoryForm(${sublist.subCategoryId},${sublist.isActive})" title="${sublist.isActive eq true ? 'Click To Deactivate' : 'Click To Activate'}">
+			            						<i class="${sublist.isActive eq false ? 'bx bx-lock' : 'bx bx-lock-open'}"></i></button>			            
+			            					</td>
+										</tr>
+							     </c:forEach> 
+								</tbody>
+							</table>
+						
+					</div>
+		
+	<form action = "${contextPath}/mst/edit-SubCategory" method="GET" id="subcategoryFormList">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="subCategoryId" id="subcategory1Id">
+	</form>
+	
+	<form action = "${contextPath}/mst/activeInactiveSubCategory" method="post" id="subcategoryFormAct">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="subCategoryId" id="subcategoryIdAct"/>
+	<input type="hidden" name="status" id="status"/>
+    </form> 
+    
+      <form action = "${contextPath}/image/viewDocuments" method="get" id="subCatFormView" enctype="multipart/form-data" target="_blank">
+	<input type="hidden" name="moduleName" id="moduleName"/>
+	<input type="hidden" name="filePath" id="filePath"/>
+      </form> 
+
+    
+
+<script>
+function saveForm(status){
+	 if($("#categoryName").val() == 0){
+		  bootbox.alert("Please Select Category Name.");
+		  return false;
+	  }
+	  if($("#subCategoryName").val() == ""){
+		  bootbox.alert("Please Enter Sub-Category Name.");
+		  return false;
+	  }
+	  if($("#subCategoryDescription").val() == ""){
+		  bootbox.alert("Please Enter Sub-Category Description.");
+		  return false;
+	  }
+	 
+	  else{
+		/*   var msg = status === 'SAVE' ? 'save' : 'update';
+		  bootbox.confirm("Do you want to "+msg+" Category ?",function(result){
+			  if(result){
+				  $("#subCategoryForm").submit(); 
+			  }
+		  }); */
+		  $("#subCategoryForm").submit(); 
+	  }
+}
+
+function editSubCategoryForm(id){
+	debugger;
+	$("#subcategory1Id").val(id);
+	$("#subcategoryFormList").submit();
+}
+
+function actSubCategoryForm(id,status){
+	debugger;
+	$("#subcategoryIdAct").val(id);
+	if(status == true){
+		$("#status").val(false);
+	}else{
+		$("#status").val(true);
+	}
+	$("#subcategoryFormAct").submit();
+}
+
+function viewImage(){
+	  $('#moduleName').val('SUBCATEGORY');
+	  $('#filePath').val('${subCategoryData.subCategoryImagePath}');
+	  $('#subCatFormView').submit();
+}
+function addChip() {
+    var inputElement = document.getElementById("chip-input");
+    var chipText = inputElement.value.trim();
+    
+    if (chipText !== "") {
+        var chipContainer = document.getElementById("chips-list");
+        var newChip = document.createElement("div");
+        newChip.className = "chip";
+        newChip.textContent = chipText;
+        newChip.onclick = function() {
+            chipContainer.removeChild(newChip);
+            updateHiddenKeywords();
+        };
+        chipContainer.appendChild(newChip);
+        updateHiddenKeywords();
+        inputElement.value = "";
+    }
+}
+
+function updateHiddenKeywords() {
+    var chipElements = document.querySelectorAll('.chip');
+    var keywords = Array.from(chipElements).map(chip => chip.textContent).join(', ');
+    var hiddenKeywordsInput = document.getElementById("keywords-input");
+    hiddenKeywordsInput.value = keywords;
+}
+
+var initialKeywords = document.getElementById("keywords").value;
+document.getElementById("chip-input").value = initialKeywords;
+
+</script>    
+

@@ -1,0 +1,23 @@
+
+     ___       ___           ___     
+     /\__\     /\__\         /\  \    
+    /:/  /    /::|  |       /::\  \   
+   /:/  /    /:|:|  |      /:/\ \  \  
+  /:/  /    /:/|:|__|__   _\:\~\ \  \ 
+ /:/__/    /:/ |::::\__\ /\ \:\ \ \__\
+ \:\  \    \/__/~~/:/  / \:\ \:\ \/__/
+  \:\  \         /:/  /   \:\ \:\__\  
+   \:\  \       /:/  /     \:\/:/  /  
+    \:\__\     /:/  /       \::/  /   
+     \/__/     \/__/         \/__/    
+====================================================================================
+ Library Management System 
+- Manager			: Kishore kumar Jena
+- Business Analyst  : 
+- Project lead      : Ajay Kumar
+- Team              : Somyaranjan Khatua, Surya Prakash Mangaraj, Shibananda Nayak
+- Design            : Prasanta Sing
+- Deployment        :
+- Tester            : 
+- Project Setup By  : Ajay Kumar
+====================================================================================

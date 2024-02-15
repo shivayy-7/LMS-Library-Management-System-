@@ -1,0 +1,27 @@
+package com.aashdit.lms.VO;
+
+import java.util.Date;
+
+import com.aashdit.lms.model.Book;
+import com.aashdit.lms.model.BookIssue;
+import com.aashdit.lms.model.LibraryCard;
+
+import lombok.Data;
+
+@Data
+public class BookIssueVO {
+
+	private Long bookIssuedId;
+	private Book bookId;
+	private LibraryCard libraryCardId;
+	private String issuedDate;
+	private String returnDate;
+//	private Long bookIssuedId;
+	private String status;
+	private Boolean isActive;
+	private String fineAmount;
+	private String bookCondition;
+	private String actualReturnDate;
+	private String reIssuedate;
+	
+}

@@ -1,0 +1,18 @@
+package com.aashdit.lms.service;
+
+import java.util.List;
+
+import com.aashdit.framework.core.ServiceOutcome;
+import com.aashdit.lms.model.Category;
+import com.aashdit.lms.model.TypeMember;
+
+public interface CommonService {
+
+	ServiceOutcome<List<?>> getAllAjaxCallDetails(String identity, String id);
+
+	ServiceOutcome<List<?>> getAllData(String identity);
+
+	ServiceOutcome<List<TypeMember>> findByMeberCode(String dcode);
+
+
+}

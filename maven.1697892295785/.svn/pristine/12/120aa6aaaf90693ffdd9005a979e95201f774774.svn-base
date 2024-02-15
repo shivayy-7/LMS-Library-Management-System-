@@ -1,0 +1,71 @@
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="userDetails" value="${serviceOutcome.data}" />
+<script type="text/javascript"
+	src="${contextPath}/assets/appJs/validation/common-utils.js"></script>
+	
+	
+	<div class="container-fluid">
+	<%@ include file="/WEB-INF/views/message.jsp"%>
+                <div class="row inner-cardbox">
+                    <h6>Book Issue</h6>
+                    <hr>
+                   <form action="${contextPath}/mst/save-member" class="row" id="submitForm" method="POST" enctype="multipart/form-data">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						  <input type="hidden" name="memberId" value="${mamberData.memberId}" />
+                        <div class="col-md-9">
+                            <div class="row">
+                           <div class="form-group col-md-4">
+                                    <label>Contact Number</label>
+                                    <input type="tel" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+											maxlength="10" onchange="is_mobile_valid(this.value);"
+											id="phoneNo" name="phoneNo" value="${mamberData.phoneNo}">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                             
+                            </div>
+
+                            <div class="row">
+                               
+                            </div>
+
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" onclick="submitButton();" value="Submit">Submit</button>
+                            	<c:if test="${mamberData.status eq 'PENDING'}">
+									<c:if test="${roleCode eq 'ROLE_ADMIN'}">
+									 <a class="btn btn-xs int-btn btn-success" title="Approve" data-bs-toggle="modal" data-bs-target="#approveModal" onclick="updateIntrest('${mamberData.memberCode}');" >APPROVE</a>
+									</c:if>
+								</c:if>
+                            </div>
+
+                        </div>
+                       
+                    </form>
+                </div>
+
+            </div>
+            
+            
+            
+            
+            
+
+
+
+
+
+ 
+
+
+
+
+
+
+

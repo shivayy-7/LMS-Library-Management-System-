@@ -1,0 +1,114 @@
+package com.aashdit.lms.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.aashdit.framework.core.ServiceOutcome;
+import com.aashdit.lms.model.Book;
+import com.aashdit.lms.model.BookCatalog;
+import com.aashdit.lms.model.LibraryCard;
+import com.aashdit.lms.model.Member;
+import com.aashdit.lms.model.TypeMember;
+import com.aashdit.lms.repository.BookCatalogRepository;
+import com.aashdit.lms.repository.BookRepository;
+import com.aashdit.lms.repository.LibraryCardRepository;
+import com.aashdit.umt.model.User;
+import com.aashdit.umt.util.SecurityHelper;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
+public class BookIssueServiceImpl implements BookIssueService,MessageSourceAware{
+	
+	@Autowired
+	private LibraryCardRepository libraryCardRepository;
+	
+	@Autowired
+	private BookCatalogRepository bookCatalogRepository;
+	
+	@Autowired
+	private BookRepository bookRepository;
+
+	@Autowired
+	private MessageSource messageSource;
+	
+	@Override
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+	
+	@Override
+	public List<Object[]> findApprovalNo(String aaprovalNo) {
+		  List<Object[]> objectList= libraryCardRepository.findApprovalNoAutoSearch(aaprovalNo); 	  
+		  return objectList;
+	}
+
+	@Override
+	public ServiceOutcome<LibraryCard> findMemberByApprovalNo(String sentapprovalNo) {
+		ServiceOutcome<LibraryCard> srvc = new ServiceOutcome<>();
+	    String message = "";
+	    Boolean flag = true;
+	    LibraryCard cardData = new LibraryCard();
+
+	    try {
+	        User user = SecurityHelper.getCurrentUser();
+
+	        // Check if mamberCode is present
+	        if (Optional.ofNullable(sentapprovalNo).isPresent()) {
+	            cardData = libraryCardRepository.findCardByApprovalNo(sentapprovalNo);
+	        } else {
+	            message = "Member Not Found";
+	            flag = false;
+	        }
+	    } catch (Exception e) {
+	        message = "Something went wrong, please try again";
+	        flag = false;
+	        log.error("Exception occurred in findMemberByApprovalNo method in BookIssueServiceImpl-->", e);
+	    }
+
+	    srvc.setData(cardData);
+	    srvc.setMessage(message);
+	    srvc.setOutcome(flag);
+
+	    return srvc;
+	}
+
+	@Override
+	public List<Object[]> findBookSByNamel(String books) {
+		 List<Object[]> objectList =null;
+		try {
+			objectList= bookCatalogRepository.findBooksByBookName(books); 
+		}
+		catch (Exception e) {
+			 log.error("Exception occurred in findBookSByNamel method in BookIssueServiceImpl-->", e);
+		}
+		return objectList;
+	}
+
+	@Override
+	public ServiceOutcome<List<Book>> findByCode(String code) {
+		ServiceOutcome<List<Book>> svcOutcome = new ServiceOutcome<>();
+		try {
+			Optional<BookCatalog> data = bookCatalogRepository.findByBookCatalogCode(code);
+			List<Book> lstSc = bookRepository.findByBookCatalogIdAndIsActive(data.get().getBookCatalogId(), true);
+			svcOutcome.setData(lstSc);
+		}
+		catch (Exception e) {
+			 log.error("Exception occurred in findByCode method in BookIssueServiceImpl-->", e);
+			 svcOutcome.setData(null);
+				svcOutcome.setOutcome(false);
+				svcOutcome.setMessage(messageSource.getMessage("msg.error", null, LocaleContextHolder.getLocale()));
+		}
+		return svcOutcome;
+	}
+
+	
+	
+}

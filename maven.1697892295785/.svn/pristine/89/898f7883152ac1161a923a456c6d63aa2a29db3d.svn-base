@@ -1,0 +1,38 @@
+package com.aashdit.lms.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.aashdit.framework.core.ServiceOutcome;
+import com.aashdit.lms.service.CommonService;
+
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
+@Data
+@Controller
+@RequestMapping("/core")
+@Slf4j
+public class CommonController {
+
+	
+	@Autowired
+	private CommonService commonService;
+	
+	@GetMapping("/getData")
+	public @ResponseBody ServiceOutcome<List<?>> getAjaxDtlsByIdentity(String identity, String id){
+		ServiceOutcome<List<?>> soc = new ServiceOutcome<List<?>>();
+		try {
+			soc = commonService.getAllAjaxCallDetails(identity, id);
+		} catch (Exception e) {
+			log.error("Exception occurred in getAjaxDtlsByIdentity("+identity+") -> CommonController" + e.getMessage());
+		}
+		return soc;
+	}
+	
+}

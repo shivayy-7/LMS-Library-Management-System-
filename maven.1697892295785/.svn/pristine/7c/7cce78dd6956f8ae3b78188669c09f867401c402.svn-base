@@ -1,0 +1,162 @@
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="userDetails" value="${serviceOutcome.data}" />
+<script type="text/javascript"
+	src="${contextPath}/assets/appJs/validation/common-utils.js"></script>
+	
+	
+	<div class="container-fluid">
+	<%@ include file="/WEB-INF/views/message.jsp"%>
+                <div class="row inner-cardbox">
+                    <h6> User Detials</h6>
+                    <hr>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" id="memberName" name="memberName" value="${pntData.member.memberName}">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Contact Number</label>
+                                    <input type="tel" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+											maxlength="10" onchange="is_mobile_valid(this.value);"
+											id="phoneNo" name="phoneNo" value="${pntData.member.phoneNo}">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Email</label>
+                                    <input type="text" class="form-control" 
+											onchange="mailVal(this.value)" id="emailId" name="emailId"
+											value="${pntData.member.emailId}">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label>Gender</label>
+                                    <input type="text" class="form-control" 
+											onchange="mailVal(this.value)" id="emailId" name="emailId"
+											value="${pntData.member.gender.genderNameEN}">
+                                </div>
+
+                                
+                                <div class="form-group col-md-4">
+                                    <label>Date of Birth</label>
+                                    <div class="datepicker_con_add">
+                                    <input type="text" class="form-control"
+											id="dob" name="dob" style="pointer-events: none;"
+											value="<fmt:formatDate pattern="dd/MM/yyyy" value="${pntData.member.dob}" />">
+											</div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Issue Date </label>
+                                    <div class="datepicker_con_add">
+                                    <input type="text" class="form-control"
+											id="dob" name="dob" style="pointer-events: none;"
+											value="<fmt:formatDate pattern="dd/MM/yyyy" value="${pntData.issueDate}" />">
+											</div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Valid Date</label>
+                                    <div class="datepicker_con_add">
+                                    <input type="text" class="form-control"
+											id="dob" name="dob" style="pointer-events: none;"
+											value="<fmt:formatDate pattern="dd/MM/yyyy" value="${pntData.validDate}" />">
+											</div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label>Address Information</label>
+                                    <textarea class="form-control" style="height: 70px;"
+											oninput="this.value = this.value.replace(/[^A-Za-z0-9\-_!@#$%^&*()]/g, '');"
+											maxlength="10" id="address"
+											name="address">${pntData.member.address}</textarea>
+                                </div>
+                            </div>
+
+                            
+
+                        </div>
+                        
+                        <div class="col-lg-4">
+                        	<div class="id-card-tag"></div>
+								<div class="id-card-tag-strip"></div>
+								<div class="id-card-hook"></div>
+								<div class="id-card-holder">
+									<div class="id-card">
+										<div class="header">
+											<img style="width: 50px;" src="https://is4-ssl.mzstatic.com/image/thumb/Purple118/v4/62/cd/f5/62cdf5b2-a731-76ca-aa69-fe82c8a09d94/source/512x512bb.jpg">
+										</div>
+										<div class="photo">
+                                   <img class="profile-pic" src="${contextPath}/image/viewimage?filePath=${pntData.member.imagePath}">
+										</div>
+										<h2>${pntData.member.memberName}</h2>
+							      		<h3>${pntData.approveNo}</h3>
+										<p style="font-size: 10px;"><strong>Valid:</strong> <fmt:formatDate pattern="dd/MM/yyyy" value="${pntData.issueDate}" /> - <fmt:formatDate pattern="dd/MM/yyyy" value="${pntData.validDate}" /></p>
+										<hr>
+										<ul class="list-unstyled d-flex align-items-center justify-content-around">
+											<li><img class="img-fluid" src="data:image/jpeg;base64,${base64Image}" alt="Image" /></li>
+											<li class="text-start">
+												<p><strong>NIIT University</strong> Neemrana, NH-8 Delhi-Jaipur highway <p>
+												<p>District Alwar, Rajasthan <strong>301705</strong></p>
+												<p>Ph: 01494-660600, 7073222393</p>
+											</li>
+										</ul>
+									</div>
+								</div>
+                        </div>
+
+<!-- 		<div class="col-md-4"> -->
+<!-- 			<h6 class="mb-2">barcode</h6> -->
+<!-- 			<div class="circle upload-button"> -->
+<%-- 			<img class="img-fluid" src="data:image/jpeg;base64,${base64Image}" alt="Image" /> --%>
+<!-- 			</div> -->
+
+<!-- 		</div> -->
+		<%-- <div class="col-md-3">
+            <h6 class="mb-2">Image</h6>
+            <div class="circle upload-button">
+               
+                 <c:if test="${not empty pntData}">
+                <img class="profile-pic" src="${contextPath}/image/viewimage?filePath=${pntData.member.imagePath}">
+               </c:if>
+               
+            </div>
+            
+        </div> --%>
+                        
+                        
+                        
+                        
+                   
+                </div>
+
+            </div>
+     
+     <script>
+ 
+     </script>       
+            
+            
+            
+
+
+
+
+
+ 
+
+
+
+
+
+

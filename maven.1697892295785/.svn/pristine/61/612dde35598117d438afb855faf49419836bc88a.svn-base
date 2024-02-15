@@ -1,0 +1,88 @@
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>  
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> 
+	<c:set var="contextPath" value="${pageContext.request.contextPath}"/> 
+
+<script src="${contextPath}/assets/appJs/framework/data-table.js" type="text/javascript"></script>
+
+<div class="content">
+		<div class="panel-header bg-primary-gradient">
+			<div class="page-inner">
+				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+					<div>
+						<h2 class="text-white fw-bold m-0">Member List</h2>
+					</div>
+					<div class="ml-md-auto">
+						<a href="${contextPath}" class="btn btn-white btn-border btn-round mr-2"><i class="fa fa-home"></i></a>
+						<a href="javascript:void(0)" class="btn btn-secondary btn-round">/ Member List </a>
+					</div>
+				</div>
+			</div>
+		</div>
+	<div class="page-inner dashboard-page">
+		<div class="row ">
+			<div class="col-md-12">
+				<div class="card ">
+					<div class="card-header">
+						<div class="panel-actions">
+							<a href="#" class="fa fa-caret-down"></a>
+						</div>
+						<h4 class="card-title">Member List</h4>
+					</div>
+					<div class="card-body">
+						<div class="col-md-12 mt-4">
+							<table  class="display table table-bordered table-hover dataTable" >
+								<thead>
+									<tr>
+										<th>Sl no.</th>
+										<th>Mamber Name</th>
+										<th>Contact Number</th>
+										<th>Email ID </th>
+										<th>Address</th>
+										<th style="width: 165px;"><spring:message code="site.common.action"></spring:message></th> 													
+									</tr>
+								</thead>
+								<tbody>
+							 	   <c:forEach items="${memberList}" var="memberlist" varStatus="count"> 
+										<tr>
+											<td>${count.count }</td>
+											<td>${memberlist.memberName}</td>
+											<td>${memberlist.phoneNo}</td>
+											<td>${memberlist.emailId}</td>
+											<td>${memberlist.address}</td>
+											<td> 
+												<button type="button" class="btn btn-warning" onclick = "editMamberForm('${memberlist.memberCode}');" title="Edit"><i class="fa fa-edit"></i></button>
+			            					</td>
+										</tr>
+							     </c:forEach> 
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<form action = "${contextPath}/mst/edit-member" method="post" id="mamberForm">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="mamberCode" id="mamberCode">
+</form> 
+
+
+<script>
+function editMamberForm(code){
+	debugger;
+			$("#mamberCode").val(code);
+			$("#mamberForm").submit();	
+		
+
+}
+
+
+
+
+</script>
+
+	

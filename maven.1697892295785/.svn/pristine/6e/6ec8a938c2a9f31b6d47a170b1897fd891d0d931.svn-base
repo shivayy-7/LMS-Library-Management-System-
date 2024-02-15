@@ -1,0 +1,74 @@
+spring.profiles.active=dev 
+
+spring.datasource.hikari.connection-timeout=10000
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=15
+spring.datasource.hikari.pool-name=HikariConnectionPool
+spring.datasource.platform=postgres
+
+spring.jpa.show-sql=false
+spring.jpa.database-platform = org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true
+
+#this line shows the sql statement in the logs
+#logging.level.org.hibernate.SQL=debug
+#spring.jpa.properties.hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS=25
+#this line shows sql values in the logs
+#logging.level.org.hibernate.type.descriptor.sql=trace
+
+server.error.include-stacktrace=always
+
+logging.level.org.springframework=WARN
+logging.level.com.aashdit=DEBUG
+
+# multipart
+multipart.enabled=true
+spring.servlet.multipart.max-file-size=20MB
+spring.servlet.multipart.max-request-size=20MB
+
+post.login.url=/home
+OTP.BASED.LOGIN=true
+FST.TIME.CHANGEPASS=true
+WRONG.LOGIN.COUNT=5
+#Folder Path For Document Upload 
+#Windows Path
+UPLOAD.FILE.PATH=D://LMS
+
+#Linux Path
+#UPLOAD.FILE.PATH=/home/EUTPADAN/EUTPADAN_FILES
+
+#For Local
+#FILE-PATH=D:/file_upload
+UPLOAD.FILE.PATH=D:/LMS
+
+ispass.change.fsttime=true
+#Mail Properties
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+mail.smtp.host=smtp.gmail.com
+mail.smtp.ssl.trust=smtp.gmail.com
+mail.smtp.port=587
+mail.smtp.ssl.protocols=TLSv1.2
+mail.username=aashdittechnologies6@gmail.com
+mail.password=yfmx swzj umvs abhw 
+#Aashdit@1234$
+#deployment url
+#Local
+#deploymentUrl=http://localhost:3030/eutpadan
+#Staging
+deploymentUrl=http://209.97.136.18:8080/bemc/login
+#Production
+#deploymentUrl=
+mail.to.send = ajay.kumar@aashdit.com
+MAX.SIZE.TOP =10
+session.timeout.period =30000
+captcha.options=is
+
+#payment live key
+#test.key.id = rzp_live_AswUrYypq3JBlq
+#secret.key.id = 1UpsCvrTGfah5o7iF84oOv9o
+
+#payment testing key
+test.key.id = rzp_test_JOC0wRKpLH1cVW
+secret.key.id = 9EzSlxvJbTyQ2Hg0Us5ZX4VD
+

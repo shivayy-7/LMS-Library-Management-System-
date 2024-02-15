@@ -1,0 +1,45 @@
+package com.aashdit.lms.utils;
+
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+
+import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.aashdit.lms.VO.BookCatalogDTO;
+import com.aashdit.lms.service.MemberService;
+//import com.aashdit.umt.repository.ApplicationContentRepository;
+
+@Service
+public class ApplicationContentUtils1 {
+	
+	final static Logger logger = Logger.getLogger(ApplicationContentUtils1.class);
+	
+//	@Autowired
+//	private ApplicationContentRepository applicationContentRepository;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	
+	  
+		public void getDynamicWebpageParameters(HttpSessionEvent event) {
+			try {
+				HttpSession session = event.getSession(); 
+				Long mamberId  = 1L;
+		    	List<BookCatalogDTO> applicationContents = memberService.getDashboardData(mamberId);
+		    	session.setAttribute("homePage", applicationContents);
+		    	applicationContents.forEach(a->{
+		    		//session.setAttribute(a.getContentKey(), a.getContentValue()); 
+		    	});
+			} catch (Exception e) {
+				logger.error(e.getMessage(),e);
+			}
+		}
+
+	
+
+}

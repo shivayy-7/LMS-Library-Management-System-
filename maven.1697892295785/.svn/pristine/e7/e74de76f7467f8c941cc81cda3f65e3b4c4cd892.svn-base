@@ -1,0 +1,321 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<script type="text/javascript" src="${contextPath}/assets/appJs/validation/common-utils.js"></script>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<style>
+.but-al{
+margin-top:27px !important;
+}
+
+label.required::after {
+    content: '* ';
+    color: red;
+}
+</style>
+
+<div class="container-fluid" style="margin-top: -100px; position: relative; z-index:99">
+<%@ include file="/WEB-INF/views/message.jsp"%>
+                <div class="row inner-cardbox">
+                    <h6> Add Book</h6>
+                    <hr>
+                    
+            <form action="${contextPath}/mst/manage-book" method="post" id="manageBookForm" >
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+            <input type="hidden" name="bookCatalogVO.bookCatalogId" value="${bookDtls.bookCatalogVO.bookCatalogId}" />
+            <input type="hidden" name="bookCatalogVO.bookCatalogCode" value="${bookDtls.bookCatalogVO.bookCatalogCode}" />
+                <div class="row">
+                 
+                      <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="publisherName">Book Title :</label>
+		                 	 <input type="text" class="form-control form-control-sm AlphabetsOnly" id="bookTitle" value="${bookDtls.bookCatalogVO.bookTitles}" name="bookCatalogVO.bookTitles" >
+		                </div>
+		              </div>
+		              
+		               <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="address">Author :</label>
+		                  	<select class="form-control form-control-sm " id="libId" name="bookCatalogVO.authorId.authorId" >
+							        <option value="0">--Select--</option>
+							        <c:forEach items="${authorList}" var="author">
+							            <option value="${author.authorId}" ${bookDtls.bookCatalogVO.authorId.authorId eq author.authorId ? 'selected' : ''} >${author.authorName}</option>
+							        </c:forEach> 
+							    </select>
+		                </div>
+		              </div>
+		              
+		              <div class="col-md-4">
+						 <div class="form-group">
+						   <label class="required" for="contact">Total Book :</label>
+						   <input type="text" class="form-control form-control-sm NumbersOnly" id="contact" value="${bookDtls.bookCatalogVO.totalBook}" name="bookCatalogVO.totalBook" maxlength="10" onchange="createBookRows(this.value, ${bookDtls.bookCatalogVO.totalBook})">
+						 </div>
+					 </div>
+		              
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="website">Book Subject :</label>
+		                  	<input type="text" class="form-control form-control-sm AlphabetsOnly" id="website" value="${bookDtls.bookCatalogVO.bookSubject}" name="bookCatalogVO.bookSubject" >
+		                </div>
+		              </div>
+		              
+		                <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Sub Category :</label>
+		                  	<select class="form-control form-control-sm " id="libId" name="bookCatalogVO.subCategoryId.subCategoryId" >
+							        <option value="0">--Select--</option>
+							        <c:forEach items="${subCatList}" var="subCat">
+							            <option value="${subCat.subCategoryId}" ${bookDtls.bookCatalogVO.subCategoryId.subCategoryId eq subCat.subCategoryId ? 'selected' : '' }>${subCat.subCategoryName}</option>
+							        </c:forEach> 
+							    </select>
+		                </div>
+		              </div>  
+		              
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Description :</label>
+		                  	<input type="text" class="form-control form-control-sm " id="desc" value="${bookDtls.bookCatalogVO.description}" name="bookCatalogVO.description" >
+		                </div>
+		              </div>
+		              
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Language:</label>
+		                  	<input type="text" class="form-control form-control-sm AlphabetsOnly" id="desc" value="${bookDtls.bookCatalogVO.language}" name="bookCatalogVO.language" >
+		                </div>
+		              </div>
+		              
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">No of Page:</label>
+		                  	<input type="text" class="form-control form-control-sm NumbersOnly" id="desc" value="${bookDtls.bookCatalogVO.noOfPage}" name="bookCatalogVO.noOfPage" >
+		                </div>
+		              </div>
+		              
+		              <%-- <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Img Path :</label>
+		                  	<input type="text" class="form-control form-control-sm " id="desc" value="${publisherData.publisherVO.description}" name="publisherVO.description" >
+		                </div>
+		              </div> --%>
+		              
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Book price :</label>
+		                  	<input type="text" class="form-control form-control-sm NumbersOnly" id="desc" value="${bookDtls.bookCatalogVO.bookPrice}" name="bookCatalogVO.bookPrice" >
+		                </div>
+		              </div>
+		              
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Purchase Date :</label>
+			               <div class="datepicker-box">
+	                       <input type="text" class="form-control form-control-sm datepicker_con" id="desc" value="${bookDtls.bookCatalogVO.purchaseDate}" name="bookCatalogVO.purchaseDate" >
+	                       <i class='bx bx-calendar'></i>
+	                       </div>
+		                </div>
+		              </div>
+		              
+		              <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Publish Date :</label>
+		                    <div class="datepicker-box">
+		                  	<input type="text" class="form-control form-control-sm datepicker_con" id="desc" value="${bookDtls.bookCatalogVO.publishDate}" name="bookCatalogVO.publishDate" >
+		                  	<i class='bx bx-calendar'></i>
+		                  	</div>
+		                </div>
+		              </div>
+		              
+		               <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Library :</label>
+		                  <select class="form-control form-control-sm " id="libId" name="bookCatalogVO.libId.libId">
+							        <option value="0">--Select--</option>
+							        <c:forEach items="${libraryList}" var="library">
+							            <option value="${library.libId}" ${bookDtls.bookCatalogVO.libId.libId eq library.libId ? 'selected' : '' }>${library.libName}</option>
+							        </c:forEach> 
+							    </select>
+		                </div>
+		              </div> 
+		              
+		               <div class="col-md-4">
+		                <div class="form-group">
+		                  <label class="required" for="desc">Publisher :</label>
+		                     <select class="form-control form-control-sm " id="libId" name="bookCatalogVO.publisherId.publisherId" >
+							        <option value="0">--Select--</option>
+							        <c:forEach items="${publisherList}" var="publisher">
+							            <option value="${publisher.publisherId}" ${bookDtls.bookCatalogVO.publisherId.publisherId eq publisher.publisherId ? 'selected' : '' }>${publisher.publisherName}</option>
+							        </c:forEach> 
+							    </select>
+		                </div>
+		              </div> 
+		              
+						<table id="bookTable" border="1">
+						  <thead>
+						    <tr>
+						      <th>Book ID</th>
+						      <th>Rack</th>
+						      <th>Shelf</th>
+						      <th>Action</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <c:if test="${not empty bookDtls.bookVOList}">
+						      <c:forEach var="book" items="${bookDtls.bookVOList}" varStatus="count">
+						        <tr>
+						          <td>
+						            <input type="hidden" name="bookVOList[${count.index}].bookId" value="${book.bookId}" class="form-control" />
+						            <input type="text" name="bookVOList[${count.index}].bookUkNo" value="${book.bookUkNo}" class="form-control" readonly="readonly"/>
+						          </td>
+						          <td>
+						            <select name="bookVOList[${count.index}].rackId.rackId" class="form-control" onchange="getShelfByRackId(this.value, 'shelf[${count.index}]')"> 
+						              <option value="0">-select rack-</option>
+						              <c:forEach var="rack" items="${rackList}"> 
+						                <option value="${rack.rackId}" ${rack.rackId eq book.rackId.rackId ? 'selected' : ''}>${rack.rackName}</option>
+						              </c:forEach> 
+						            </select> 
+						          </td>
+						          <td>
+						            <select name="bookVOList[${count.index}].shelfId.shelfId" class="form-control" id="shelf[${count.index}]">
+						            </select>
+						          </td>
+						          <td>
+						            <input type="hidden" id="myCheckbox[${count.index}]" value="false" class="form-control" />
+						            <button type="button" id="deleteButton[${count.index}]" onclick="deleteRow(this)" disabled="disabled">Delete</button>
+						          </td>
+						        </tr>
+						      </c:forEach>
+						    </c:if>
+						  </tbody>
+						</table>
+
+		              
+		             <div class="col-md-12">
+						<button type="button" class="btn btn-success btn-sm" onclick = "saveForm()">${empty publisherData.publisherVO.publisherId ? 'Save' : 'Update'}</button>
+				  	</div>
+           	</div>
+           	
+           	
+            </form>
+            </div>
+        </div>	
+        
+<script>
+
+$(document).ready(function(){
+    debugger;
+    
+    var bookData = [
+        <c:forEach items="${bookDtls.bookVOList}" var="item" varStatus="status">
+            {
+                'rackId': '${item.rackId.rackId}',
+                'shelfId': '${item.shelfId.shelfId}'
+            }
+            <c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+
+    for (let i = 0; i < bookData.length; i++) {
+        getShelfByRackId(bookData[i].rackId, 'shelf['+i+']', bookData[i].shelfId);
+    }
+});
+
+
+
+</script>
+
+    
+<script>
+
+function saveForm(){
+	debugger;
+	/* var labels = document.querySelectorAll('label[class="required"]');
+	var falseFields=0;
+	labels.forEach(function(label) {
+		if(falseFields == 0){
+	    var labelId = label.getAttribute('for');
+	    var inputElement = document.getElementById(labelId);
+
+	        var inputValue = inputElement.value;
+	        if (inputValue === '' || inputValue === undefined || inputValue === '0') {
+	            alert(label.textContent +"is required");
+	            falseFields ++;
+	            return false;
+	        } 
+		}
+	});
+	
+if (falseFields == 0) { */
+	$("#manageBookForm").submit();
+// } 
+}
+
+function createBookRows(totalBooks, previousValue) {
+    debugger;
+    var tableBody = document.getElementById('bookTable').getElementsByTagName('tbody')[0];
+    var bookName = $("#bookTitle").val() || '';
+    var newTotalBooks = totalBooks - previousValue;
+
+    if (previousValue != null || previousValue != undefined) {
+
+        if (newTotalBooks > 0 ) {
+            for (let i = previousValue + 1; i <= previousValue + newTotalBooks; i++) {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = '<td><input type="text" name="bookVOList[' + i + '].bookUkNo" value="' + bookName.toUpperCase() + '-' + i + '" class="form-control" readonly="readonly"/></td><td> <select name="bookVOList[' + i + '].rackId.rackId" class="form-control" onchange="getShelfByRackId(this.value, \'shelf[' + i + ']\')"> <option value="0">-select rack-</option> <c:forEach var="rack" items="${rackList}"> <option value="${rack.rackId}">${rack.rackName}</option> </c:forEach> </select> </td><td> <select name="bookVOList[' + i + '].shelfId.shelfId" class="form-control" id="shelf[' + i + ']"> <option value="0">-select shelf-</option> </select> </td><td> <button type="button" id="deleteButton[' + i + ']" onclick="deleteRow(this)" disabled="disabled">Delete</button></td>';
+                tableBody.appendChild(newRow);
+            }
+        } else if (newTotalBooks < 0 && newTotalBooks < previousValue) {
+            for (let i = 0; i <= previousValue; i++) {
+                var deleteButton = document.getElementById('deleteButton[' + i + ']');
+                if (deleteButton) {
+                    deleteButton.removeAttribute('disabled');
+                }
+            }
+        }
+
+    } else {
+        for (let i = 1; i <= totalBooks; i++) {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = '<td><input type="text" name="bookVOList[' + i + '].bookUkNo" value="' + bookName.toUpperCase() + '-' + i + '" class "form-control" readonly="readonly"/></td><td> <select name="bookVOList[' + i + '].rackId.rackId" class="form-control" onchange="getShelfByRackId(this.value, \'shelf[' + i + ']\')"> <option value="0">-select rack-</option> <c:forEach var="rack" items="${rackList}"> <option value="${rack.rackId}">${rack.rackName}</option> </c:forEach> </select> </td><td> <select name="bookVOList[' + i + '].shelfId.shelfId" class="form-control" id="shelf[' + i + ']"> <option value="0">-select shelf-</option> </select> </td><td>';
+            tableBody.appendChild(newRow);
+        }
+    }
+}
+
+function deleteRow(button) {
+    // Find the row containing the clicked button and remove it
+    var row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+
+
+
+function getShelfByRackId(rackId, shelfDropdownId, selecteditem) {
+    debugger;
+    $.get(contextPath + "/core/getData", { id: rackId, identity: 'SHELFBYRACK' })
+        .done(function (data) {
+            var blk = data.data;
+
+            var shelfDropdown = document.getElementById(shelfDropdownId);
+            shelfDropdown.innerHTML = '<option value="0">-select shelf-</option>';
+
+            for (var i = 0; i < blk.length; i++) {
+                var option = document.createElement('option');
+                option.value = blk[i].shelfId;
+                option.text = blk[i].shelfName;
+
+                if (blk[i].shelfId == selecteditem) {
+                    option.selected = true;
+                }
+                shelfDropdown.appendChild(option);
+            }
+        })
+        .fail(function () {
+            $('#loader').addClass('hidden');
+            alert("error");
+        });
+}
+
+ 
+</script>    
+

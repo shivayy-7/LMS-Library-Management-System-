@@ -1,0 +1,86 @@
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>  
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%> 
+    
+	<c:set var="contextPath" value="${pageContext.request.contextPath}"/> 
+
+<script src="${contextPath}/assets/appJs/framework/data-table.js" type="text/javascript"></script>
+
+
+	<div class="container-fluid">
+	<%@ include file="/WEB-INF/views/message.jsp"%>
+                <div class="row inner-cardbox">
+                    <h6>Member List</h6>
+                    <hr>
+						<div class="col-md-12 mt-4">
+						   <div class="table-responsive">
+						<table id="myTable" class="table table-striped">
+								<thead>
+									<tr>
+										<th>Sl no.</th>
+										<th>Mamber Name</th>
+										<th>Contact Number</th>
+										<th>Email ID </th>
+										<th>Address</th>
+										<th>Status</th>
+										<th style="width: 165px;"><spring:message code="site.common.action"></spring:message></th> 													
+									</tr>
+								</thead>
+								<tbody>
+							 	   <c:forEach items="${memberList}" var="memberlist" varStatus="count"> 
+										<tr>
+											<td>${count.count }</td>
+											<td>${memberlist.memberName}</td>
+											<td>${memberlist.phoneNo}</td>
+											<td>${memberlist.emailId}</td>
+											<td>${memberlist.address}</td>
+											<td>${memberlist.status}</td>
+											<td> 
+												<button type="button" class="btn btn-warning" onclick = "editMamberForm('${memberlist.memberCode}');" title="Edit"><i class="fa fa-edit"></i></button>
+												<c:if test="${memberlist.status eq 'APPROVE'}">
+												<button type="button" class="btn btn-success" onclick = "viewmember('${memberlist.memberCode}');" title="View"><i class="fa fa-eye"></i></button>
+												</c:if>
+			            					</td>
+										</tr>
+							     </c:forEach> 
+								</tbody>
+							</table>
+							</div>
+						</div>
+						</div>
+						</div>
+						
+					
+
+<form action = "${contextPath}/mst/edit-member" method="post" id="mamberForm">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="mamberCode" id="mamberCode">
+</form> 
+
+<form action = "${contextPath}/mst/view-member" method="post" id="mamberviewForm">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="hidden" name="mamberCode" id="mamberviewCode">
+</form> 
+
+<script>
+function editMamberForm(code){
+	debugger;
+			$("#mamberCode").val(code);
+			$("#mamberForm").submit();	
+}
+
+
+function viewmember(code){
+	debugger;
+			$("#mamberviewCode").val(code);
+			$("#mamberviewForm").submit();	
+}
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+    });
+</script>
+	

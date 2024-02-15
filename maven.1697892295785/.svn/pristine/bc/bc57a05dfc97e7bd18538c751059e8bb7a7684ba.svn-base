@@ -1,0 +1,38 @@
+package com.aashdit.lms.VO;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.aashdit.lms.model.Author;
+import com.aashdit.lms.model.Library;
+import com.aashdit.lms.model.Publisher;
+import com.aashdit.lms.model.SubCategory;
+
+import lombok.Data;
+@Data
+public class BookCatalogVO {
+
+	private Long bookCatalogId;
+	private String bookCatalogCode;
+	private String isbnNo;
+	private String bookTitles;
+//	private Author authorId;
+	private String authorId;
+	private Long totalBook;
+	private String bookSubject;
+	private SubCategory subCategoryId;
+	private String description;
+	private String language;
+	private Long noOfPage;
+	private String imgPath;
+	private String bookPrice;
+	private String purchaseDate;
+	private String publishDate;
+	private Library libId;
+	private String publisherId;
+	private Boolean isActive;
+	
+}

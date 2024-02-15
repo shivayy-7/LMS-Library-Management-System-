@@ -1,0 +1,102 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="container-fluid" style="margin-top: -100px; position: relative; z-index:99">
+		<div class="inner-cardbox">
+		<h6>Soviet Space Dogs</h6>
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="book">
+					  <div class="book-cover cover1">
+					    <img src="http://fuel-design.com/media/uploads/publications/Soviet_Space_Dogs_cover.jpg">
+					    <div class="effect"></div>
+					    <div class="light"></div>
+					  </div>
+					  <div class="book-inside"></div>
+					</div>
+					<ul class="book-dec">
+						<li class="bookName">Sikara</li>
+						<li><a class="price" href="#">Rs. 19.95</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2">
+					<div class="book">
+					  <div class="book-cover cover1">
+					    <img src="http://fuel-design.com/media/uploads/publications/Soviet_Space_Dogs_cover.jpg">
+					    <div class="effect"></div>
+					    <div class="light"></div>
+					  </div>
+					  <div class="book-inside"></div>
+					</div>
+					<ul class="book-dec">
+						<li class="bookName">Sikara</li>
+						<li><a class="price" href="#">Rs. 19.95</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2">
+					<div class="book">
+					  <div class="book-cover cover1">
+					    <img src="http://fuel-design.com/media/uploads/publications/Soviet_Space_Dogs_cover.jpg">
+					    <div class="effect"></div>
+					    <div class="light"></div>
+					  </div>
+					  <div class="book-inside"></div>
+					</div>
+					<ul class="book-dec">
+						<li class="bookName">Sikara</li>
+						<li><a class="price" href="#">Rs. 19.95</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2">
+					<div class="book">
+					  <div class="book-cover cover1">
+					    <img src="http://fuel-design.com/media/uploads/publications/Soviet_Space_Dogs_cover.jpg">
+					    <div class="effect"></div>
+					    <div class="light"></div>
+					  </div>
+					  <div class="book-inside"></div>
+					</div>
+					<ul class="book-dec">
+						<li class="bookName">Sikara</li>
+						<li><a class="price" href="#">Rs. 19.95</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2">
+					<div class="book">
+					  <div class="book-cover cover1">
+					    <img src="http://fuel-design.com/media/uploads/publications/Soviet_Space_Dogs_cover.jpg">
+					    <div class="effect"></div>
+					    <div class="light"></div>
+					  </div>
+					  <div class="book-inside"></div>
+					</div>
+					<ul class="book-dec">
+						<li class="bookName">Sikara</li>
+						<li><a class="price" href="#">Rs. 19.95</a></li>
+					</ul>
+				</div>
+				<div class="col-lg-2">
+					<div class="book">
+					  <div class="book-cover cover1">
+					    <img src="http://fuel-design.com/media/uploads/publications/Soviet_Space_Dogs_cover.jpg">
+					    <div class="effect"></div>
+					    <div class="light"></div>
+					  </div>
+					  <div class="book-inside"></div>
+					</div>
+					<ul class="book-dec">
+						<li class="bookName">Sikara</li>
+						<li><a class="price" href="#">Rs. 19.95</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

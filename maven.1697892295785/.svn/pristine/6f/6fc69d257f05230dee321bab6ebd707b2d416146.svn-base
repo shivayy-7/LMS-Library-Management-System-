@@ -1,0 +1,94 @@
+
+
+            <div class="container-fluid"
+        style="margin-top: -100px; position: relative; z-index:99">
+        <div class="row mt-2">
+          <div class="col-md-4 mb-4">
+            <div class="cardbox">
+              <h5>Total Visitors</h5>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="cardbox">
+              <h5>Total Books Available</h5>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="cardbox">
+              <h5>Total Books Available</h5>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="cardbox">
+
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="cardbox">
+
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="cardbox">
+
+            </div>
+          </div>
+        </div>
+
+
+<div class="row">
+        <div class="col-md-12 mt-5">
+          <div class="inner-cardbox">
+            <h6>Overdue Books</h6>
+            <table class="table table-bordered mt-3">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Member</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Overdue</th>
+                  <th>Return Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>256302</td>
+                  <td>Daniel</td>
+                  <td>The Midnight Line</td>
+                  <td>Leo Child</td>
+                  <td>3 days</td>
+                  <td>Oct 5,2023</td>
+                </tr>
+                <tr>
+                  <td>18562</td>
+                  <td>Joseph</td>
+                  <td>Henry V</td>
+                  <td>William Shake</td>
+                  <td>6 days</td>
+                  <td>Oct 5,2023</td>
+                </tr>
+                <tr>
+                  <td>256302</td>
+                  <td>Daniel</td>
+                  <td>The Midnight Line</td>
+                  <td>Leo Child</td>
+                  <td>3 days</td>
+                  <td>Oct 5,2023</td>
+                </tr>
+              </tbody>
+            </table>
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </div>
+        </div>
+        </div>
+      </div>

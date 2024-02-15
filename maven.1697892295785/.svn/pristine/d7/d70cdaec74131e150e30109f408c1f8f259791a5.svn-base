@@ -1,0 +1,203 @@
+package com.aashdit.lms.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.aashdit.framework.core.ServiceOutcome;
+import com.aashdit.lms.model.Author;
+import com.aashdit.lms.model.BookCatalog;
+import com.aashdit.lms.model.BookIssue;
+import com.aashdit.lms.model.Category;
+import com.aashdit.lms.model.Gender;
+import com.aashdit.lms.model.Library;
+import com.aashdit.lms.model.LibrarySection;
+import com.aashdit.lms.model.LookupValue;
+import com.aashdit.lms.model.Publisher;
+import com.aashdit.lms.model.Rack;
+import com.aashdit.lms.model.Shelf;
+import com.aashdit.lms.model.SubCategory;
+import com.aashdit.lms.model.TypeMember;
+import com.aashdit.lms.repository.AuthorRepository;
+import com.aashdit.lms.repository.BookCatalogRepository;
+import com.aashdit.lms.repository.BookIssueRepository;
+import com.aashdit.lms.repository.CategoryRepository;
+import com.aashdit.lms.repository.GenderRepository;
+import com.aashdit.lms.repository.LibraryRepository;
+import com.aashdit.lms.repository.LibrarySectionRepository;
+import com.aashdit.lms.repository.LookupValueRepository;
+import com.aashdit.lms.repository.PublisherRepository;
+import com.aashdit.lms.repository.RackRepository;
+import com.aashdit.lms.repository.ShelfRepository;
+import com.aashdit.lms.repository.SubCategoryRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
+public class CommonServiceImpl implements CommonService,MessageSourceAware {
+	
+	@Autowired private GenderRepository genderRepository;
+	
+	@Autowired private LibraryRepository libRepository;
+	
+	@Autowired private LibrarySectionRepository libSectionRepository;
+	
+	@Autowired private CategoryRepository categoryRepository;
+	
+	@Autowired private SubCategoryRepository subCategoryRepository;
+	
+	@Autowired private RackRepository rackrepository;
+	
+	@Autowired private BookCatalogRepository bookCatagoryRepository;
+	
+	@Autowired private BookIssueRepository bookIssueRepository;
+	
+	@Autowired
+	private ShelfRepository shelfRepository;
+	
+	@Autowired
+	private PublisherRepository publisherRepository;
+	
+	@Autowired
+	private LookupValueRepository lookupValueRepository;
+	
+	@Autowired
+	private AuthorRepository authorRepository;
+	
+	private MessageSource messageSource;
+	
+	@Override
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
+	@Override
+	public ServiceOutcome<List<?>> getAllAjaxCallDetails(String identity, String id) {
+		ServiceOutcome<List<?>> soc = new ServiceOutcome<List<?>>();
+		try {
+		switch(identity) {
+			 case "SHELFBYRACK":
+				 List<Shelf> findAllByRackRackId = shelfRepository.findAllByRackRackId(Long.parseLong(id));
+				 soc.setData(findAllByRackRackId);
+				 break;
+			    
+			  default:
+			    // code block
+			}
+			 soc.setMessage("success");
+			  soc.setOutcome(true);
+		} catch (Exception e) {
+			log.error("Exception occurred in getAllAjaxCallDetails("+identity+") -> CommonServiceImpl" + e.getMessage());
+			soc.setMessage("error");
+			soc.setOutcome(false);
+		}
+		return soc;
+	}
+
+	
+	@Override /* For Only State, Dist, Block/Municipality/Municipality Corporation, Gp, Village/Ward */
+	public ServiceOutcome<List<?>> getAllData(String identity){
+		ServiceOutcome<List<?>> soc = new ServiceOutcome<List<?>>();
+		try {
+			switch(identity) {
+			case "STATE":
+			
+				break;
+			case "GENDER":
+				List<Gender> genderList = genderRepository.findAllByIsActiveTrue();
+				soc.setData(genderList);
+				break;
+			case "LIBRARY":
+				List<Library> findAllByIsActiveTrue = libRepository.findAllByIsActive(true);
+				soc.setData(findAllByIsActiveTrue);
+				break;
+			case "LIBRARY-SECTION":
+				List<LibrarySection> findAllByIsActive = libSectionRepository.findAllByIsActive(true);
+				soc.setData(findAllByIsActive);
+				break;
+			case "CATEGORY":
+			     List<Category> findAllCategoryByIsActive = categoryRepository.findAllByIsActiveTrueOrderByCategoryId() ;
+			     soc.setData(findAllCategoryByIsActive);
+			     break;
+			case "SUBCATEGORY":
+				List<SubCategory> findAllSubCategoryByIsActive = subCategoryRepository.findAllByIsActiveTrueOrderBySubCategoryId();
+				soc.setData(findAllSubCategoryByIsActive);
+				break;
+			case "RACK_ALL":
+				List<Rack> findAll = rackrepository.findAll();
+				soc.setData(findAll);
+				break;
+			case "SHELF_ALL":
+				List<Shelf> findAllShelf = shelfRepository.findAll();
+				soc.setData(findAllShelf);
+				break;
+			case "PUBLISHER":
+				List<Publisher> findAllByIsActive2 = publisherRepository.findAllByIsActive(true);
+				soc.setData(findAllByIsActive2);
+				break;
+			case "AUTHOR":
+				List<Author> findAllByIsActive3 = authorRepository.findAllByIsActive(true);
+				soc.setData(findAllByIsActive3);
+				break;
+			case "RACK_TRUE":
+				List<Rack> findAllByIsActive4 = rackrepository.findAllByIsActive(true);
+				soc.setData(findAllByIsActive4);
+				break;
+			case "BOOK-CATAGORY":
+				List<BookCatalog> findAllByIsActive5 = bookCatagoryRepository.findAllByIsActive(true);
+				soc.setData(findAllByIsActive5);
+				break;
+			case "ISSUEDBOOKLIST":
+				List<BookIssue> findAllByIsActive6 = bookIssueRepository.findAllByIsActive(true);
+				soc.setData(findAllByIsActive6.stream().filter(e->e.getStatus().equals("APPROVE")).collect(Collectors.toList()));
+				break;
+			
+			  default:
+			    // code block
+			}
+			soc.setMessage("success");
+			soc.setOutcome(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occurred in getAllData("+identity+") -> CommonServiceImpl" + e.getMessage());
+			soc.setMessage("error");
+			soc.setOutcome(false);
+		}
+		return soc;
+	}
+
+
+	@Override
+	public ServiceOutcome<List<TypeMember>> findByMeberCode(String dcode) {
+		ServiceOutcome<List<TypeMember>> svcOutcome = new ServiceOutcome<>();
+		try
+		{
+			List<LookupValue> lstData = lookupValueRepository.findByCodeOrderByValueCodeDesc(TypeMember.DCODE);
+			List<TypeMember> lstSc = lstData.stream().map(e -> {
+				TypeMember sc = new TypeMember();
+				BeanUtils.copyProperties(e, sc);
+				return sc;
+			}).collect(Collectors.toList());
+			svcOutcome.setData(lstSc);
+		}
+		catch(Exception ex)
+		{
+			
+			svcOutcome.setData(null);
+			svcOutcome.setOutcome(false);
+			svcOutcome.setMessage(messageSource.getMessage("msg.error", null, LocaleContextHolder.getLocale()));
+		}
+		
+		return svcOutcome;
+	}
+	
+	
+	
+}
